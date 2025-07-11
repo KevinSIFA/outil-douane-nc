@@ -1,50 +1,29 @@
+// ===================================
+// SCRIPT DE DÉBOGAGE UNIQUEMENT
+// ===================================
 document.addEventListener('DOMContentLoaded', () => {
-    // On sélectionne les éléments de la page
+    console.log("ÉTAPE 1 : La page est chargée.");
+
     const aiForm = document.getElementById('ai-form');
     const productInput = document.getElementById('product-input');
     const aiResult = document.getElementById('ai-result');
-    const aiLoading = document.getElementById('ai-loading');
-    const submitButton = document.getElementById('submit-button');
 
-    // Mettez votre URL de webhook ici
-    const zapierWebhookUrl = 'https://hooks.zapier.com/hooks/catch/23129157/u37yrql/'; // ⚠️ REMPLACEZ PAR VOTRE URL ZAPIER !
-
-    // On s'assure que le formulaire existe avant d'ajouter un écouteur
     if (aiForm) {
-        aiForm.addEventListener('submit', async (event) => {
-            // On empêche le rechargement de la page
-            event.preventDefault(); 
+        console.log("ÉTAPE 2 : Le formulaire <form id='ai-form'> a été trouvé.");
+
+        aiForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            console.log("ÉTAPE 3 : Le bouton a été cliqué, l'événement 'submit' est capturé.");
             
-            // On affiche le chargement et on désactive le bouton
-            aiLoading.style.display = 'block';
-            submitButton.disabled = true;
-            aiResult.textContent = '';
+            const text = productInput.value;
+            console.log("ÉTAPE 4 : Le texte entré est :", text);
 
-            try {
-                // On envoie la requête à Zapier
-                const response = await fetch(zapierWebhookUrl, {
-                    method: 'POST',
-                    body: productInput.value 
-                });
-
-                // Si la réponse n'est pas OK, on génère une erreur
-                if (!response.ok) {
-                    throw new Error(`Erreur du serveur: ${response.statusText}`);
-                }
-
-                // On affiche le résultat renvoyé par Zapier
-                const resultData = await response.json();
-                aiResult.textContent = JSON.stringify(resultData, null, 2);
-
-            } catch (error) {
-                // En cas d'erreur réseau ou autre, on l'affiche
-                aiResult.textContent = `Une erreur est survenue: ${error.message}`;
-                console.error('Erreur lors du fetch:', error);
-            } finally {
-                // Dans tous les cas, on cache le chargement et on réactive le bouton
-                aiLoading.style.display = 'none';
-                submitButton.disabled = false;
-            }
+            aiResult.style.color = 'green';
+            aiResult.textContent = `TEST RÉUSSI. Le bouton est bien connecté au JavaScript. Vous avez tapé : "${text}"`;
+            console.log("ÉTAPE 5 : Le texte du résultat a été changé.");
         });
+
+    } else {
+        console.error("ERREUR CRITIQUE : Le formulaire avec l'id 'ai-form' est INTROUVABLE !");
     }
 });
