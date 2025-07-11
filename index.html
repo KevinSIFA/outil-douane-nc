@@ -7,23 +7,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Mes Outils Douaniers</h1>
-
-    <section id="ai-assistant">
-        <h2>Assistant IA de Classification</h2>
-        <form id="ai-form">
-            <textarea id="product-input" placeholder="Décrivez votre produit ici..." rows="8"></textarea>
-            <button type="submit">Analyser</button>
-        </form>
-        <div id="ai-loading" style="display: none;">Analyse en cours...</div>
-        <pre id="ai-result"></pre>
-    </section>
-
-    <section id="tariff-search">
-        <h2>Recherche dans la Nomenclature</h2>
-        <input type="text" id="search-input" placeholder="Rechercher par mot-clé ou code SH...">
-        <div id="search-results"></div>
-    </section>
+    <h1>Assistant IA de Classification</h1>
+    <form id="ai-form">
+        <textarea id="product-input" placeholder="Décrivez votre produit ici..." required></textarea>
+        <button type="submit" id="submit-button">Analyser</button>
+    </form>
+    <div id="ai-loading" style="display: none;">Analyse en cours...</div>
+    <pre id="ai-result"></pre>
 
     <script src="script.js"></script>
 </body>
