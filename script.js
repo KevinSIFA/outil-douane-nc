@@ -6,13 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const productInput = document.getElementById('product-input');
     const aiResult = document.getElementById('ai-result');
     const aiLoading = document.getElementById('ai-loading');
-
-    // ▼▼▼ COLLEZ L'URL DE VOTRE WEBHOOK ZAPIER CI-DESSOUS ▼▼▼
-    const zapierWebhookUrl = 'https://hooks.zapier.com/hooks/catch/23129157/u37yrql/'; // ⚠️ REMPLACEZ PAR VOTRE URL ZAPIER !
+    
+    // ▼▼▼ VÉRIFIEZ QUE C'EST BIEN VOTRE URL DE WEBHOOK ZAPIER ▼▼▼
+    const zapierWebhookUrl = 'https://hooks.zapier.com/hooks/catch/23129157/u37yrql/'; // URL de votre screenshot
 
     aiForm.addEventListener('submit', async (event) => {
         event.preventDefault(); // Empêche la page de se recharger
-
+        
         const productDescription = productInput.value;
         if (!productDescription.trim()) {
             alert('Veuillez décrire le produit.');
@@ -22,17 +22,22 @@ document.addEventListener('DOMContentLoaded', () => {
         aiLoading.style.display = 'block';
         aiResult.textContent = '';
 
-        // On envoie la description au webhook Zapier
-        // La méthode POST est plus robuste, mais GET fonctionne pour un texte simple
         try {
-            const response = await fetch(`${zapierWebhookUrl}?description=${encodeURIComponent(productDescription)}`, {
-                method: 'POST' // On utilise POST même si les données sont dans l'URL pour plus de compatibilité
+            // On envoie la description au webhook Zapier en utilisant la méthode POST correcte
+            const response = await fetch(zapierWebhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' // On précise qu'on envoie du JSON
+                },
+                body: JSON.stringify({ // On met les données dans le corps de la requête
+                    description: productDescription 
+                })
             });
 
             if (response.ok) {
                 const resultData = await response.json();
-                // Adaptez "result.completion" au nom du champ que Zapier vous renvoie
-                aiResult.textContent = resultData.completion || JSON.stringify(resultData, null, 2);
+                // Adaptez la ligne ci-dessous en fonction de la réponse de Zapier
+                aiResult.textContent = JSON.stringify(resultData, null, 2);
             } else {
                 aiResult.textContent = 'Erreur lors de la communication avec le serveur.';
             }
